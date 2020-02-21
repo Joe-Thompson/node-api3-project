@@ -1,9 +1,9 @@
 const express = require('express');
 const helpers = require("./userDb");
-const postHelpers = require("../posts/postDb");
 const Id = require("../middleware/validateId");
 const User = require("../middleware/validateUser");
 const Post = require("../middleware/validatePost");
+const postHelpers = require("../posts/postDb");
 
 const router = express.Router();
 
@@ -17,13 +17,19 @@ router.post('/',User,  (req, res, next) => {
         })
 });
 
-router.post('/:id/posts', Id, Post,  (req, res, next) => {
-    postHelpers.insert(req.body, req.params.id)
+router.post('/:id/posts',Id, Post,  (req, res, next) => {
+    const data = {
+        ...req.body,
+        user_id: Number(req.params.id)
+    };
+    postHelpers.insert(data)
         .then(post => {
+            console.log(req.data);
             res.status(201).json(post)
         })
         .catch(err => {
-            next()
+            console.log(data);
+            next(err)
         })
 });
 

@@ -12,8 +12,10 @@ server.use(logger);
 server.use(helmet());
 server.use(express.json());
 server.use("/", welcomeRouter);
-server.use("/users", userRouter);
-server.use("/posts", postRouter);
+server.use("/api/users", userRouter);
+server.use("/api/posts", postRouter);
+
+
 
 server.use((req, res) => {
     res.status(404).json({ message: "Route was not found" })
